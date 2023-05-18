@@ -14,7 +14,7 @@ cd BUPT-Computer-Networking-SMTP-Proxy
 
 # Use pdm 
 curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python -
-pdm instal
+pdm install
 ```
 
 
