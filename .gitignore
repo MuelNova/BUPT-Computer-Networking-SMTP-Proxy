@@ -127,6 +127,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+smtp_proxy/
 
 # Spyder project settings
 .spyderproject
