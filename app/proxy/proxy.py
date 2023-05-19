@@ -1,12 +1,15 @@
 import socket
 import threading
-from typing import Callable, Any, Tuple, List
+from typing import Type, Any, Tuple, List
 
 from ..logging import logger
+from ..handler import BaseHTTPHandler
+from ..parser import BaseParser, HTTPParser
 
 class Proxy:
     def __init__(self,
-                 handler: Callable[[socket.socket, Tuple[str, int], bytes], Any],
+                 handler: Type[BaseHTTPHandler],
+                 parser: Type[BaseParser] = HTTPParser,
                  *,
                  host: str = 'localhost',
                  port: int = 8080,
@@ -15,7 +18,8 @@ class Proxy:
                  timeout: int = 5
                  ):
         
-        self.handler = handler
+        self.handler = handler(parser)
+
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # ipv4, tcp
         self.socket.bind((host, port))
         self.socket.listen(max_conn)
@@ -34,7 +38,7 @@ class Proxy:
                 client, address = self.socket.accept()
                 client.settimeout(self.timeout)
                 logger.info(f'{self} New connection from {address}')
-                thread = threading.Thread(target=self.__preprocess_handler, args=(client, address))
+                thread = threading.Thread(target=self.handle_data, args=(client, address))
                 self.threads.append(thread)
                 self.clients.append(client)
                 thread.start()
@@ -55,12 +59,9 @@ class Proxy:
         return f'<Proxy {self.socket.getsockname()}>'
         
 
-    def __preprocess_handler(self, client: socket.socket, address: Tuple[str, int]):
+    def handle_data(self, client: socket.socket):
         data = client.recv(self.buf_size)
-        try:
-            self.handler(client, address, data)
-        except InterruptedError:  # ToDo: 类似于 Hook 之类的？没想好怎么写
-            return
+        self.handler(self.socket, client, data)
         
 
     def close(self):

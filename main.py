@@ -1,4 +1,6 @@
 from app import logger, Proxy
+from app.handler import SMTPProxyHandler
+from app.parser import HTTPParser
 
-proxy = Proxy(lambda x, y, z: print(z), host='0.0.0.0')
+proxy = Proxy(SMTPProxyHandler, HTTPParser, host='0.0.0.0')
 proxy()
