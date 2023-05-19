@@ -3,3 +3,4 @@
 """
 
 from .logging import logger as logger
+from .proxy import Proxy as Proxy

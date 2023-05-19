@@ -11,8 +11,8 @@ log_save_path = config.log_save_path
 if not Path(log_save_path).exists():
     Path(log_save_path).mkdir(parents=True)
 
-log_format = logging.Formatter("\033[32m%(asctime)s \033[0m[%(levelname)s] \033[34m%(name)s\033[0m | \033[37m%(message)s\033[0m", "%H:%M:%S")
-file_log_format = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s | %(message)s", "%H:%M:%S")
+log_format = logging.Formatter("\033[32m%(asctime)s \033[0m[%(levelname)s] \033[37m%(message)s\033[0m", "%H:%M:%S")
+file_log_format = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s", "%H:%M:%S")
 
 logger = logging.getLogger(__name__)
 logger.setLevel(log_level)
