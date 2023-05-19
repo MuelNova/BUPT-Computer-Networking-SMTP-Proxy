@@ -1,4 +1,4 @@
-from app.logging import logger
+from app import logger, Proxy
 
-logger.info('Hello, world!')
-logger.warning("哈哈")
+proxy = Proxy(lambda x, y, z: print(z), host='0.0.0.0')
+proxy()
