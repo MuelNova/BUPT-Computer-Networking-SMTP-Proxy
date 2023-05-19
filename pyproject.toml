@@ -8,7 +8,9 @@ authors = [
     {name = "SilentE", email = "silenteags@gmail.com"},
     {name = "Hzao", email = "hzao@hzao.me"},
 ]
-dependencies = []
+dependencies = [
+    "pydantic[dotenv]>=1.10.7",
+]
 requires-python = ">=3.10"
 license = {text = "MIT"}
 
