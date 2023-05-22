@@ -11,6 +11,7 @@ from app.logging import logger
 
 config = get_config()
 
+
 class BaseHTTPHandler(ABC):
     def __init__(self, parser: Type[HTTPParser]):
         if not issubclass(parser, HTTPParser):
@@ -104,13 +105,11 @@ class HTTPHandler(BaseHTTPHandler):
         cc = self.make_session(client, data.path)
         if not cc:
             return
-        cc.sendall(data.raw)
+        cc.send(data.raw)
         while True:
             try:
                 buf = cc.recv(1024)
             except socket.timeout:
-                break
-            if not buf:
                 break
             logger.debug(f'[HTTPHandler] {data.method} | {data.path.raw_path} | {buf}')
             client.send(buf)
