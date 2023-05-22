@@ -1,7 +1,7 @@
 import socket
 import re
 from typing import Dict, Any, Optional, List
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, validator, ValidationError
 
 class PathModel(BaseModel):
     raw_path: str
@@ -21,6 +21,12 @@ class HTTPParseModel(BaseModel):
     body: Optional[bytes] = None
 
 
+class SMTPParseModel(BaseModel):
+    raw: bytes
+    status_code: int
+    message: bytes
+
+
 class ToModel(BaseModel):
     address: str
     name: str
@@ -34,7 +40,8 @@ class ToModel(BaseModel):
             return values['address'].split('@')[0]
         return value
 
-class QQMailPostModel(BaseModel):
+
+class MailPostModel(BaseModel):
     to: List[ToModel]
     sendmailname: str
     subject: str
@@ -44,8 +51,14 @@ class QQMailPostModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
+
+class QQMailPostModel(MailPostModel):
     @validator('to', pre=True, always=True)
-    def to_validator(cls, value: str) -> List[ToModel]:
+    def to_validator(cls, value: str | List[ToModel]) -> List[ToModel]:
+        if isinstance(value, list):
+            return value
+        if not isinstance(value, str):
+            raise ValidationError(f'Invalid QQMailPostModel to field to, expected str or List[ToModel], got {type(value)}')
         value = value.split('; ')
         res = []
         for i in value:

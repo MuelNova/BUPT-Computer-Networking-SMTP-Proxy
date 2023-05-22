@@ -1,6 +1,16 @@
-from typing import Any, Union
+from typing import Any, Union, Literal, List
 from pathlib import Path
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator, BaseModel, ValidationError
+
+class AccountConfig(BaseModel):
+    type: Literal['qq']
+    username: str
+    password: str
+    smtp_server: str
+    smtp_port: int
+
+    class Config:
+        validate_assignment = True
 
 
 class Config(BaseSettings):
@@ -16,10 +26,30 @@ class Config(BaseSettings):
     # QQ SMTP
     QQ_MAIL_POST_URL: str = '/cgi-bin/compose_send'
     QQ_MAIL_WEBSERVER: str = 'mail.qq.com'
-    
+
+    accounts: List[AccountConfig] | str
     
     class Config:
         env_file = '.env'
+
+    @validator('accounts', pre=True, always=True)
+    def accounts_validator(cls, value: str) -> List['AccountConfig']:
+        res = []
+        value = value.split(' ')
+        for i in value:
+            if not isinstance(i, str):
+                raise ValidationError(f'Invalid account type of {i}, expected str')
+            i = i.split(';')
+            if len(i) != 5:
+                raise ValidationError('Invalid account format, expected "type;username;password;smtp_server;smtp_port"')
+            res.append(AccountConfig(
+                type=i[0],
+                username=i[1],
+                password=i[2],
+                smtp_server=i[3],
+                smtp_port=int(i[4])
+            ))
+        return res
 
 
 def get_config(**kwargs: Any) -> Config:

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Any, Tuple, Dict
+from typing import Any, Tuple, Dict, List
 
-from app.models import HTTPParseModel, PathModel
+from app.models import HTTPParseModel, PathModel, SMTPParseModel
 from app.logging import logger
 
 
@@ -45,5 +45,15 @@ class HTTPParser(BaseParser):
             port = 80
         return PathModel(raw_path=raw_path, protocol=protocol, webserver=webserver, path=path, query=query, port=port)
         
-        
 
+class SMTPParser(BaseParser):
+    @classmethod
+    def parse(cls, data: bytes) -> SMTPParseModel:
+        logger.debug(f'[SMTPParser] Received data: {data}')
+        status_code, message = data[:3], data[4:]
+        status_code = int(status_code)
+        return SMTPParseModel(raw=data, status_code=status_code, message=message)
+    
+    @classmethod
+    def parse_multi(cls, data: bytes) -> List[SMTPParseModel]:
+        return [cls.parse(d) for d in data.split(b'\r\n') if d != b'']
