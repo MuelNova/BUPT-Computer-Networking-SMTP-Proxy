@@ -1,4 +1,5 @@
 import queue
+import ssl
 import base64
 import socket
 import threading
@@ -14,7 +15,7 @@ from app.logging import logger
 from app.config import get_config, AccountConfig
 
 
-HTML = open(Path(__file__).parent / 'success.html', 'r').read()
+HTML = open(Path(__file__).parent / 'success.html', 'r', encoding='UTF-8').read()
 
 class BaseSMTPForwarder(ABC):
     def __init__(self,
@@ -58,7 +59,14 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
             3. 发送邮件失败
             4. 用户名不存在
         """
+        ssl_ = False
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if self.config.smtp_port == 465:
+            # SSL
+            logger.info("Using SSL to connect to SMTP server")
+            ssl_context = ssl.create_default_context()
+            self.socket = ssl_context.wrap_socket(self.socket, server_hostname=self.config.smtp_server)
+            ssl_ = True
         try:
             self.socket.connect((self.config.smtp_server, self.config.smtp_port))
         except socket.timeout:
@@ -68,10 +76,23 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
         if first.status_code != 220:
             raise SMTPConnectionError(f"[{first.status_code}] {first.message}")
         
+        if ssl_:
+            self.socket.send(f"EHLO {self.config.smtp_server}\r\n".encode('utf-8'))
+            ssl_resp = self.parser.parse_multi(self.socket.recv(1024))
+            print(ssl_resp)
+            if ssl_resp[-1].status_code != 250:
+                raise SMTPConnectionError(f"【EHLO】 [{ssl_resp[-1].status_code}] {ssl_resp[-1].message}")
+            
+            self.socket.send(f"STARTTLS\r\n".encode('utf-8'))
+            ssl_resp = self.parser.parse(self.socket.recv(1024))
+            if ssl_resp.status_code != 220:
+                raise SMTPConnectionError(f"【STARTTLS】 [{ssl_resp[-1].status_code}] {ssl_resp[-1].message}")
+        
+        
         self.socket.send(f"EHLO {self.config.smtp_server}\r\n".encode('utf-8'))
         seconds = self.parser.parse_multi(self.socket.recv(1024))
         if seconds[-1].status_code != 250:
-            raise SMTPConnectionError(f"【HELO】 [{seconds[-1].status_code}] {seconds[-1].message}")
+            raise SMTPConnectionError(f"【EHLO】 [{seconds[-1].status_code}] {seconds[-1].message}")
         
         self.socket.send(f"AUTH LOGIN\r\n".encode('utf-8'))
         auth = self.parser.parse(self.socket.recv(1024))
@@ -114,6 +135,7 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
             self.socket.send(f'To: "{to.name}" <{to.address}>\r\n'.encode('utf-8'))
             self.socket.send(f"Subject: {self.content.subject}\r\n".encode('utf-8'))
             self.socket.send(f"Content-Type: text/html; charset=UTF-8\r\n".encode('utf-8'))
+            self.socket.send(f"\r\n{self.content.content}\r\n".encode('utf-8'))
             self.socket.send(f".\r\n".encode('utf-8'))
 
             response = self.parser.parse(self.socket.recv(1024))
