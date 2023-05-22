@@ -20,7 +20,10 @@ class BaseHTTPHandler(ABC):
 
     def __call__(self, server: socket.socket, client: socket.socket, data: bytes) -> Any:
         res = self.parser.parse(data)
-        return getattr(self, f'do_{res.method}')(server, client, res)
+        func = getattr(self, f'do_{res.method}')
+        if func is None:
+            return
+        return func(server, client, res)
 
     @abstractclassmethod
     def do_CONNECT(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
@@ -124,7 +127,9 @@ class SMTPProxyHandler(HTTPHandler):
     def do_POST(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
         if data.path.webserver == config.QQ_MAIL_WEBSERVER and data.path.path == config.QQ_MAIL_POST_URL:
             # 将 SMTP 交由 SMTPHandler 处理
-            param = dict(p.split('=') for p in data.body.decode('utf-8').split('&'))
+            logger.debug("我跑起来啦！")
+            print(data.body.decode('utf-8').split('&'))
+            param = dict(p.split('=', 1) for p in data.body.decode('utf-8').split('&'))
             try:
                 param = QQMailPostModel(**param, socket=client)
             except ValueError as e:
