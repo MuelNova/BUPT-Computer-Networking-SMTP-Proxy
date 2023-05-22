@@ -2,14 +2,19 @@ import queue
 import base64
 import socket
 import threading
+import json
 from typing import Type, Any
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 from app.exceptions.smtp import *
 from app.models import MailPostModel, QQMailPostModel
 from app.parser import SMTPParser
 from app.logging import logger
 from app.config import get_config, AccountConfig
+
+
+HTML = open(Path(__file__).parent / 'success.html', 'r').read()
 
 class BaseSMTPForwarder(ABC):
     def __init__(self,
@@ -24,7 +29,18 @@ class BaseSMTPForwarder(ABC):
         self.server_socket = data.socket
         self.content = data
         self.parser = parser
+
+    @staticmethod
+    def format_response(response: str | dict[str, int | bytes]) -> bytes:
+        response = response if isinstance(response, bytes) else json.dumps(response).encode('utf-8')
+        print(response, type(response))
+        SUCCESS_RESPONSE = "HTTP/1.1 200\r\n"
+        SUCCESS_RESPONSE += "Content-Type: application/json\r\n"
+        SUCCESS_RESPONSE += "Content-Length: {length}\r\n"
+        SUCCESS_RESPONSE += "\r\n"
+        return SUCCESS_RESPONSE.format(length=len(response)).encode('utf-8') + response
     
+
     @abstractmethod
     def send(self):
         raise NotImplementedError
@@ -113,7 +129,8 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
         logger.success(f"Email \"{self.content.subject}\"[{len(self.content.content)}] from <{self.content.sendmailname}> to {to.name}<{to.address}> send successfully! "
                        f"From {self.server_socket.getpeername()[0]}:{self.server_socket.getpeername()[1]} to {self.config.smtp_server}:{self.config.smtp_port}")
         self.socket.close()
-        self.server_socket.send(b"HTTP/1.1 200 OK\r\n\r\n")
+        
+        self.server_socket.send(self.format_response({"errcode": "0", "errmsg": "", "sHtml": HTML}))
         self.server_socket.close()
 
 

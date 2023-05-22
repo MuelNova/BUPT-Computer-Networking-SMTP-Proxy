@@ -1,0 +1,542 @@
+<div id="ui"><style type="text/css">.bd {width:470px;padding:1px;}.biginfo_m {font:bold 16px Verdana;color:#4a8f00;}.tpinfo_m {margin:20px 0 0 50px;}.biginfo {font:bold 16px Verdana;padding:12px 0 12px 16px;}.tpinfo {background:#fff;padding:15px 13px;line-height:22px;color:#6a727a;border-left:none;border-right:none;border-bottom:none;}.tpinfo b {color:#000;}.tpinfo1 {background:#fff;padding:30px 20px 20px 0;text-align:right;}ul.addrname {list-style:none;margin-left:5px;}.addrname li {padding-bottom:3px;}ul.addrname1 {list-style:none;margin:0 0 4px 12px;}.addrname1 li {padding-bottom:3px;}.toname {margin:12px 0 0 5px;}.topos {margin-top:4px;}.di {width:533px;margin:7px 0 0;*margin:7px 0 5px 2px;}.ico_mailapp{width:40px;height:40px;margin-top:3px;background:url(http://rescdn.qqmail.com/zh_CN/htmledition/images/function/mailapp/logo_40x401e9c5d.png) no-repeat;}.wx_invite_pannel {margin-left:2px;}.wx_invite_pannel .wxinviteScuessPanel,.wx_invite_pannel .wxinviteFailedPanel{display:none;}.wx_invite_scuess .addOpera,.wx_invite_failed .addOpera{display:none;}.wx_invite_pannel .addOpera{margin:6px 0 0 15px;height:24px;}.wx_invite_failed .wxinviteScuessPanel{display:none;}.wx_invite_scuess .wxinviteScuessPanel,.wx_invite_failed .wxinviteFailedPanel{display:block;line-height:24px;margin:6px 0 0 15px;}.wx_invite_pannel .addOpera .btn{display:none;}.wx_invite_loading .addOpera .button_gray_l{display:none;}.wx_invite_loading .addOpera .btn{display:block;}.settingtable{-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;}.pannel_info{width:550px;margin:18px 0px 15px 70px;padding:15px;}.pannel_info .info_title{margin-bottom:8px;}.pannel_info .info_item{padding:9px 9px;}.pannel_info .info_item li{line-height:22px;list-style:disc inside;}.pannel_info .info_sepline {margin:14px 0 10px;border-width:1px 0 1px 0;border-bottom:1px solid #f4f4f4;}.pannel_info .info_email{display:inline-block;max-width:288px;margin-right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;vertical-align:top\9;_vertical-align:middle;}.pannel_info .info_action{display:inline-block;white-space:nowrap;}.receiverPannel .receiverBox{padding:18px 20px 14px;}.receiverPannel .receiverList{margin-top:8px;}.receiverPannel .intro{overflow:hidden;margin-bottom:15px;font-size:14px;}.receiverPannel .intro p{margin:0 0 0 58px;line-height:40px;}.clr{ height:auto; }</style><form name="del_frm" method='GET' action="/cgi-bin/addr_del?sid=_SRcjkG8uYTuBwdj" target="actionFrame"><input type="hidden" name="sid" value="_SRcjkG8uYTuBwdj"><input type="hidden" name="AddrID" value=""><input type="hidden" name="listindex" value=""></form><script type="text/javascript">
+(function(){
+getTop().mailsubject = "www";
+getTop().fromnickname  = "";})();
+</script><script type="text/javascript" id="runJS">
+var _oAddrList = [["114514","114514@qq.com","328","","","other"],["","","","","",""]];
+
+gvShowFrameId = "";
+gvShowDivId = "";
+gvShowAddrId = "";
+gvAttachmentId = "";
+
+function Onsave()
+{
+getTop().showInfo("邮件已经成功保存到“已发送”文件夹。");
+getTop().show( getTop().S("OverrunSaveSentLimit",window) , 0 );
+getTop().show( getTop().S("saveLargeAttachMail",window), 0 );
+}
+function SavingBigAttach()
+{
+getTop().showInfo("保存中...",10000);
+var _sMailId = "ZC1145-ZLkbcL_Q4dy3AgJmpd8HBd5";
+var _sAttachId = "";
+getTop().getActionWin().location.href='/cgi-bin/restoredraftmail?mailid=' + _sMailId + '&sid=_SRcjkG8uYTuBwdj&fun=notret&attchmailid=' + _sAttachId;
+}
+function Onclosereply()
+{
+getTop().S("closereply",window).style.display="none";
+}
+function Onnotclose()
+{
+getTop().S("closereply",window).style.display="none";
+}
+
+function gorss()
+{
+if(getTop().bnewwin){
+window.getTop().close();
+}else{
+location.href = "";
+}
+}
+
+function goreadmail(){
+if ( gvAttachmentId && gvAttachmentId.length>0)
+{
+var _url = "/cgi-bin/readmail?fun=sent&t=readmail&s=sent&mailid=" + gvAttachmentId + "&sid=_SRcjkG8uYTuBwdj";
+if(getTop().bnewwin)
+{
+_url += "&newwin=true";
+}
+location.href = _url;
+}
+else
+{
+var _sMailId = "ZC0722-ZLkbcL_Q4dy3AgJmpd8HBd5";
+if(getTop().bnewwin)
+location.href =  "/cgi-bin/readmail?fun=sent&t=readmail&s=sent&mailid=" + _sMailId + "&sid=_SRcjkG8uYTuBwdj&newwin=true";
+else
+location.href =  "/cgi-bin/readmail?fun=sent&t=readmail&s=sent&mailid=" + _sMailId + "&sid=_SRcjkG8uYTuBwdj";
+}
+}
+function goreadcard(){
+var _sMailId = "ZC0722-ZLkbcL_Q4dy3AgJmpd8HBd5";
+if(getTop().bnewwin)
+{
+location.href = "/cgi-bin/readmail?fun=sent&t=readmail&sid=_SRcjkG8uYTuBwdj&mailid=" + _sMailId + "&s=sent&newwin=true";
+}
+else
+{
+location.href = "/cgi-bin/readmail?fun=sent&t=readmail&sid=_SRcjkG8uYTuBwdj&mailid=" + _sMailId + "&s=sent";
+}
+}
+
+function ShowStatus(isForceShow)
+{
+var ashow = getTop().S("showSendStatus",window);
+var ifshow = getTop().S("mailSendStatus",window);
+var _sMessageId = "webmail339t1684762530t9077490";
+var _bShow = isForceShow != null ? isForceShow : getTop().isShow(ashow);
+getTop().show(ifshow, _bShow);
+getTop().show(ashow, !_bShow);
+if (_bShow)
+{
+if ( ifshow.src.indexOf( "javascript:" ) == 0 )
+GetSendStatusIng();
+ifshow.src = "/cgi-bin/send_status?sid=_SRcjkG8uYTuBwdj&messageid=" + _sMessageId + "&s=compose_send&r=" + Math.random();
+}
+}
+function GetSendStatusIng()
+{
+getTop().S("sendstatusloading",window).innerHTML = '<img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/ico_loading11e9c5d.gif" align="absmiddle" width=16 height=16> 正在查询发送状态';
+}
+function GetSendStatusOK()
+{
+getTop().S("sendstatusloading",window).innerHTML = "";
+}
+
+function OnDelAddrWX(_aiAddrIndex)
+{
+getTop().removeSelf( getTop().S("wxaddritem_" + _aiAddrIndex,window) );
+var oFriend = getTop().S("wxaddfriend", window),
+oInvite = getTop().S("wxinvitepannel", window);
+function getli(adom)
+{
+var oLi = getTop().GelTags("li", adom),
+c = 0;
+for (var i = oLi.length - 1; i >= 0; i--)
+{
+getTop.isShow(oLi[i]) && c++;
+}
+return c;
+}
+getTop().show(oFriend, getli(oFriend));
+getTop().show(oInvite, getli(oInvite));
+}
+
+function OnDelAddr(_aiAddrIndex)
+{
+_oAddrList[ _aiAddrIndex ] = null;
+getTop().removeSelf( getTop().S("addritem_" + _aiAddrIndex,window) );
+OnDelAddrWX(_aiAddrIndex);
+var _bShowNewPanel = false,
+_bShowExistPanel = false;
+for (var i=0; i< _oAddrList.length ; i++ )
+{
+if (_oAddrList[i])
+{
+if ( _oAddrList[i][5] == "new" )
+{
+_bShowNewPanel = true;
+}
+else if (_oAddrList[i][5] == "exist")
+{
+_bShowExistPanel = true;
+}
+}
+}
+if (!_bShowNewPanel && !_bShowExistPanel )
+{
+getTop().show(getTop().S( "addr_list1",window ),false);
+getTop().show(getTop().S("addr_list1_title", window),false);
+}
+else if ( !_bShowNewPanel )
+{
+getTop().show(getTop().S("newaddrPanel",window),false)
+}
+else if ( !_bShowExistPanel )
+{
+getTop().show(getTop().S("existaddrPanel",window),false);
+}
+
+getTop().QMAddress.setExpired(0);
+getTop().QMAddress.initAddress();
+
+window.shortcutgroupShow && shortcutgroupShow();
+}
+function OnUpdateAddr(_aiAddrIndex,_asAddrId,_asAddrName ,_asEmail)
+{
+var _oAddr = _oAddrList[_aiAddrIndex];
+if(_oAddr)
+{
+_oAddr[0]=_asAddrName;
+_oAddr[1]=_asEmail;
+_oAddr[2]=_asAddrId;
+}
+gvShowAddrId = _asAddrId;
+if (getTop().S("address_" + _aiAddrIndex,window))
+{
+getTop().S("address_" + _aiAddrIndex,window).innerHTML = _asEmail;
+}
+if (getTop().S("addressname_" + _aiAddrIndex,window))
+{
+getTop().S("addressname_" + _aiAddrIndex,window).innerHTML = _asAddrName;
+}
+if (getTop().S("saveAddrPanel_" + _aiAddrIndex,window))
+{
+getTop().S("saveAddrPanel_" + _aiAddrIndex,window).innerHTML = "<span class='txt_red'>已保存为<span id='addressname_" + _aiAddrIndex + "'>" + _asAddrName + "</span></span>，你可以 <a id='a_" + _aiAddrIndex + "' href='javascript:void(0)' txt='修改' onclick='Opr(" + _aiAddrIndex + ",0)'>修改</a>";
+}
+getTop().show(getTop().S("edit_" + _aiAddrIndex,window),0);
+getTop().S("a_" + _aiAddrIndex,window ).innerHTML = "修改联系人信息";
+
+}
+function getAddrByEmail ( _asEmail )
+{
+if (!_oAddrList)
+{
+return null;
+}
+for(var i=0 ;i < _oAddrList.length ; i++)
+{
+var _oAddr = _oAddrList[ i ];
+if (_oAddr[1] == _asEmail )
+{
+return _oAddr;
+}
+}
+return null;
+}
+
+function Opr(_asEmail ,_aiType)
+{
+var _oAddr= getAddrByEmail( _asEmail );
+if( _oAddr==null )
+{
+return;
+}
+debug(_oAddr,2)
+var _iAddrId=_oAddr[2];
+var _sAddrName=_oAddr[0];
+var _sEmail=_oAddr[1];
+
+getTop().tmpUser = _sAddrName;
+getTop().tmpMail = _sEmail;
+
+var _sUrl;
+if ( parseInt(_iAddrId,10)==0 || parseInt(_iAddrId,10)==-1)
+{
+if(getTop().isSpreadAddr())
+{
+_sUrl = "/cgi-bin/laddr_detail?sid=_SRcjkG8uYTuBwdj&view=qq&t=contact&edit=1&dlgname=newAddr&email=" + _sEmail ;
+_sUrl += "&icon=" + encodeURIComponent("/cgi-bin/getqqicon?mode=newaddr&sid=_SRcjkG8uYTuBwdj&mailaddr=" + _sEmail);
+var _oAddrDlg = new (getTop().QMDialog)(
+{
+sId : "newAddr",
+sTitle : "新建联系人",
+sUrl   : _sUrl,
+nHeight : 538,
+nWidth  : 600,
+onload  : function()
+ {
+this.S("_dlgiframe_").scrolling = "yes";
+ }
+}
+);
+}
+else
+{
+_sUrl="/cgi-bin/combine_addrlist?sid=_SRcjkG8uYTuBwdj&resp_charset=utf-8&mailaddr="+_sEmail+"&username="+encodeURIComponent(_sAddrName);
+_sUrl+="&t=addr_detail_edit&s=edit_send&listindex="+_aiAddrIndex+"&method=detail&view=normal&mode=";
+}
+
+
+}else{
+_sUrl = "/cgi-bin/laddr_detail?sid=_SRcjkG8uYTuBwdj&view=normal&t=contact&edit=1&editexist=1&dlgname=editAddr&AddrID=" + _iAddrId;
+_sUrl += "&icon=" + encodeURIComponent("/cgi-bin/getqqicon?mode=newaddr&sid=_SRcjkG8uYTuBwdj&mailaddr=" + _sEmail);
+var _oAddrDlg = new (getTop().QMDialog)(
+{
+sId : "editAddr",
+sTitle : "编辑联系人",
+sUrl   : _sUrl,
+nHeight : 538,
+nWidth  : 600,
+onload  : function()
+ {
+//this.S("_dlgiframe_").scrolling = "yes";
+
+ }
+
+}
+);
+}
+
+}
+function HideSMSFD( _asAddrId )
+{
+if ( _asAddrId )
+{
+var _smsdiv = getTop().S("smsdiv_"+_asAddrId,window);
+if (_smsdiv)
+{
+getTop().show(_smsdiv, 0);
+}
+}
+}
+function HideFD( )
+{
+var _oDom;
+if (gvShowFrameId != "")
+{
+_oDom = getTop().S(gvShowFrameId,window);
+if (_oDom)
+{
+var _sAddrLink = gvShowFrameId.replace(/edit_/g,"a_");
+var _oAddrLink = getTop().S(_sAddrLink,window);
+if (_oAddrLink)
+{
+_oAddrLink.innerHTML =  gvShowAddrId < 0 ? "修改并保存" : "修改联系人信息";
+}
+getTop().show(_oDom, 0);
+gvShowFrameId = "";
+gvShowAddrId = "";
+}
+}
+if (gvShowDivId != "")
+{
+_oDom = getTop().S(gvShowDivId,window);
+if (_oDom)
+{
+getTop().show(_oDom, 0);
+gvShowDivId = "";
+}
+}
+}
+
+function addmicromail(type, params)
+{
+var info = {
+friend : ["&action=addmmfrd" + params + "&uin=" + getTop().getUin(), "wxaddfriend"],
+invite : ["&action=ivt" + params + "&from=4", "wxinvitepannel"]
+}[type];
+
+getTop().setClass(getTop().S(info[1], window), "wx_invite_pannel wx_invite_loading");
+
+getTop().QMAjax.send("/cgi-bin/getqqfriend",
+{
+method : "POST",
+content : [info[0], "&t=wx_invite&ef=js&sid=_SRcjkG8uYTuBwdj&r=", Math.random()].join(''),
+onload : function(_abIsOk, _asParam)
+{
+var bSuccess = false;
+if (_abIsOk)
+{
+try
+{
+var p = eval(_asParam);
+bSuccess = p.ret == 0;
+}
+catch (e)
+{
+}
+}
+getTop().setClass(getTop().S(info[1], window), "wx_invite_pannel " + (bSuccess ? "wx_invite_scuess" : "wx_invite_failed") );
+}
+}
+)
+return false;
+}
+
+getTop().initAD(window);
+
+function compose_sendcallback( _aoCfg )
+{
+var _oTop = getTop(),_o3GContainer = _oTop.S( "3GContainer", window ) ,
+    _oNewAddr = _oTop.S( "newAddr", window ),
+    _oAdContainer = _oTop.S( "qqmail_AD_container", window ),
+_bIs3GShow = (_o3GContainer && _oTop.attr(_o3GContainer, "isShow") == 1 ),
+_bIsAddrShow = (_oNewAddr && _oTop.attr(_oNewAddr, "isShow") == 1);
+    if( _aoCfg && _aoCfg.adShow )
+    {
+try{
+_oTop.show(_oAdContainer.parentNode , 1 );
+_oTop.show(_oAdContainer,1);
+if( _bIs3GShow || _bIsAddrShow )
+{
+getTop().show("qqmail_AD_sepline", 1, window);
+}
+}catch(e)
+{}
+
+    }
+}
+</script><div style="margin:20px 0 0 20px;"><img id="specialLogo" width="142" height="126" src="http://rescdn.qqmail.com/zh_CN/htmledition/images/2023_send_success62e3d3.png" style="display: none;margin-left: 30px;"/><span class="ico_sendf" style="float:left;margin:-2px 4px 0 0;"></span><div class="addrtitle" style="margin-left:50px;"><b class="biginfo_m" id="sendinfomsg">已发送</b><div id="sendinfodiv" style="margin:6px 0 14px 2px;line-height:18px"><span id="sendinfomsg_span">此邮件被代理截获</span><span id="sSaveSendShow" >，并已成功发送</span>。  <span id="OverrunSaveSentLimit" class="txt_red" style="display:none;">由于邮件大小超过5M，存到“已发送”时默认未包含附件，以节省空间。</span><div style=" line-height:20px"><span id="saveLargeAttachMail"  style="display:none;"><a  onclick="SavingBigAttach();" style="text-decoration:underline;">保存完整邮件到“已发送”</a>&nbsp;&nbsp;&nbsp;&nbsp;</span><span id="readSendbox" ><a href="javascript:goreadmail()" style="text-decoration:underline;">好玩</a>&nbsp;&nbsp;&nbsp;</span><a id="showSendStatus" href="javascript:ShowStatus();" style="text-decoration:underline;">喜欢我计网实验吗</a> &nbsp;&nbsp;&nbsp;</div><div><div id="sendstatusloading" style="position:absolute;margin-top:10px; overflow:hidden; zoom:1;"></div><iframe name="mailSendStatus" style="margin-top:-2px;width:580px;height:auto;display:none" frameborder="0" scrolling="no" id="mailSendStatus" allowtransparency="true"></iframe></div></div><script id="JsRun2" type="text/javascript">
+var canTalkUins = [];
+function TalkAll()
+{
+for (var i = 0, len = canTalkUins.length; i < len; i++)
+{
+getTop().QQPlusUI.Talk(canTalkUins[i]);
+}
+}
+function TalkWithAddrUseQQ()
+{
+if (!getTop().QQPlusUI)
+{
+return ;
+}
+var a = _oAddrList;
+for(var i=0, len=a.length; i < len; i++)
+{
+if(a[i])
+{
+var uin = getTop().QQPlusUI.AddrToUin(a[i][1]);
+if (uin)
+{
+getTop().QQPlusUI.SetUinAction( uin, 4, getTop().getTop().gSendmailSubject );
+canTalkUins.push(uin);
+}
+}
+}
+}
+
+function CheckMobile(_number)
+{
+var _wrong = false;
+var _reg = new RegExp("^[0-9]{11}$","i");
+if ("" == _number)
+{
+getTop().showError("请输入对方手机号码");
+_wrong = true;
+}
+else if (_number.length != 11)
+{
+getTop().showError("手机号码长度应为11个数字");
+_wrong = true;
+}
+else
+{
+var b = _reg.exec(_number);
+if (!b)
+{
+getTop().showError("手机号码长度应为11个数字");
+_wrong = true;
+}
+var _numhead = _number.substr(0,3);
+if ((_numhead == "134") || (_numhead == "135") || (_numhead == "136") || (_numhead == "137") || (_numhead == "138") || (_numhead == "139") || (_numhead == "150") || (_numhead == "151") || (_numhead == "152") || (_numhead == "158") || (_numhead == "159") || (_numhead == "157") || (_numhead == "187") || (_numhead == "188"))
+{
+;
+}
+else
+{
+getTop().showError("很抱歉，目前只支持对移动手机发送");
+_wrong = true;
+}
+}
+return _wrong;
+}
+function ShowSMSFrame(_addrid)
+{
+var _div = getTop().S("smsdiv_"+_addrid,window);
+if (_div)
+{
+if ( !getTop().isShow( _div ))
+{
+var _fr = getTop().S("sms_frame",window);
+if (_fr)
+{
+_fr.src = "/cgi-bin/addr_detail?sid=_SRcjkG8uYTuBwdj&AddrID=" + _addrid + "&t=addr_sqqsms" +"&r="+Math.random();
+HideFD();
+gvShowDivId = "smsdiv_"+_addrid;
+getTop().show(_div, 1);
+}
+}
+else
+{
+_div.style.display = "none";
+}
+}
+}
+
+
+function SendSingle(_addrid)
+{
+if (!CheckMobile(getTop().S("addrnewmobile_"+_addrid,window).value))
+{
+var _nick = getTop().S("smsfrom_"+_addrid,window);
+if (!_nick || (0 == _nick.value.length))
+{
+getTop().showError("请输入您的昵称");
+_nick.focus();
+return false;
+}
+else
+{
+getTop().S("send_but_"+_addrid,window).disabled = "true";
+getTop().S("canc_but_"+_addrid,window).disabled = "true";
+getTop().S("smssingle_"+_addrid,window).submit();
+}
+}
+else
+{
+getTop().S("addrnewmobile_"+_addrid,window).focus();
+return false;
+}
+}
+function noAutoSubmit()
+{
+return false;
+}
+function GenTalkBtn()
+{
+var len = canTalkUins.length;
+if (len > 0 && getTop().isQQPlusRunning && getTop().isQQPlusRunning())
+{
+var sex = getTop().QQPlusKernel.getUinsData()[canTalkUins[0]].sex;
+document.write('<button class="btn f_size" onclick="TalkAll();" style="margin-left:15px;"/><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/qqplus_online1e9c5d.gif" >&nbsp;告诉' +
+(len > 1 ? '他们' : (sex == 1 ? '她' : '他')) + '有信了</button>');
+}
+}
+
+function showBindDialog(_sURL, _asTitle )
+{
+new (getTop().QMDialog)({
+sId : "bind2phone",
+sTitle : _asTitle || "开通回信提醒",
+sUrl : _sURL||"/cgi-bin/reminder_mgr?t=remind2phone_dlg&sid=_SRcjkG8uYTuBwdj&action=opensms&sorttype=create&filter=1&s=open",
+nWidth : 500,
+nHeight : 345,
+onclose : function(){getTop().getActionWin().location.replace('/cgi-bin/reminder_mgr?sid=_SRcjkG8uYTuBwdj&action=opensms&t=reminder_mgr');}
+});
+}
+
+
+TalkWithAddrUseQQ();
+</script><div id="buttondiv" style="padding-bottom:40px;"><span id="rssbacklist" style="display:none;"><input type="button" id="btnrssbackl" class="btn b_size" value="继续阅读 &raquo;" onclick="javascript:gorss()" style="margin-top:-4px;height:30px;vertical-align:top;"/><script type="text/javascript">
+( function() {
+GenTalkBtn();
+} )();
+</script></span><span id="backlist" style="display:none;"><a href="javascript:getTop().backHome('141');" class="btn_blue btn_space" id="btnbackl">返回邮箱首页</a><a href="javascript:;" class="btn_gray" id="btnagainl" onclick="location.replace('/cgi-bin/readtemplate?sid=_SRcjkG8uYTuBwdj&s=cnew&t=compose'+(getTop().bnewwin?'&newwin=true':''));return false;">再写一封</a><script type="text/javascript">
+( function() {
+GenTalkBtn();
+} )();
+</script></span><span id="backReceive" style="display:none;"><a href="javascript:;" id="btnagainr" onclick="javascript:getTop().close()" class="btn_blue">关闭窗口</a></span><span id="entermail" style="display:none;">&nbsp;&nbsp;&nbsp;<a onclick="javascript:getTop().goUrlTopWin('/cgi-bin/frame_html?sid=_SRcjkG8uYTuBwdj&newwin=newwin');"  style="line-height:25px;" >进入邮箱</a></span></div></div></div><div class="settingtable qqshowbd pannel_info" style="display:none;"><div id="3GContainer"></div><div id="newAddr"></div><div class="adcontainer" id="qqmail_AD_container" style="width:550px;height:100px;position:relative;overflow:hidden;display:none"><qqmailad name="AD_MAILLIST" loc="qqmail_send_skyscraper" callback="compose_sendcallback" ADDefault="todaybarNormal"></qqmailad></div></div><div style="margin:8px 0 4px 70px;" class="addrtitle" id="addr_list1_title"></div><iframe name="sms_frame" id="sms_frame" style="display:none" frameborder="0" scrolling="no" src="javascript:''"></iframe><div class="bd_gray b_size" id="tips" style="border-width:1px 0 0 0;padding-top:28px;margin:14px 0 0 70px;width:580px;line-height:22px;display:none;"><div id="normalTips" style="display:none;" ><div class="graytext clear f_size" style="padding:0 0 15px;">我们还为你提供了更多的邮箱服务：</div><div class="clear"><iframe src="javascript:'';" frameborder="0" scrolling="auto" id="sqq_addrlist" style="width:100%;height:1px;display:none;margin:8px 0 20px 5px" allowTransparency="true" onload=""></iframe><div id="sqq_addrlist_div" style="display:none;"></div></div><div  style="margin:0 0 20px 0;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/ico_infobar_alert1e9c5d.gif" style="float:left;margin:4px 0 0 0;*margin-top:3px;" /><div style="margin:0 2px 0 26px;">想了解你的收件箱中有多少广告邮件？去“广告邮件查询”中查看。<br/><a href="/cgi-bin/help_static_ad?sid=_SRcjkG8uYTuBwdj&type=0&loc=compose_send,compose_send.json,comm,22">查看详情</a></div></div><div  style="margin:0 0 20px 0;"><img src="http://rescdn.qqmail.com/zh_CN/htmledition/images/today_icos/networkdisk1e9c5d.png" style="float:left;margin:5px 0 0 2px;*margin-top:4px;" /><div style="margin:0 2px 0 26px;">绑定网盘后，你可以在写信时插入网盘中的文件；还可以将邮件附件转存到网盘中。<br/><a href="http://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1000983&&id=23" target="_blank">了解详情</a></div></div></div><iframe src="/cgi-bin/laddr_friend?func=birthcard&t=birth_friendlist&sid=_SRcjkG8uYTuBwdj&s=composenewwinlist&countlimit=4" style="display:none"></iframe><div class="clear"></div><div style="margin:0 0 20px 0;"><div style="line-height:18px"><span id="todayinfo_birth" style="display:none;"></span><div id="birthlist" class="f_size"></div></div></div></div>                        <script>
+            (function(){
+                try {
+                                var applogintime = 1611718834;
+                    if (applogintime * 1000 + 2592000000 > new Date().getTime()) {
+                        document.getElementById('appqrcode').style.display = 'none';
+                    } else {
+                        getTop().LogKV('composesend|appqrcode|show')
+                    }
+                                } catch (e) {}
+            })();
+            </script><script>
+document.readyState
+function specialAction() {
+var isShow = (Date.now() <= Date.parse('2023-02-06') && Date.now() >= Date.parse('2023-01-15')) || !!localStorage.getItem('showSpecialLogo');
+if (isShow) {
+var textNode = document.getElementById('sendinfomsg');
+textNode && (textNode.innerText += '，祝你新年收到好消息');
+var logoNode = document.getElementsByClassName('ico_sendf')[0];
+logoNode && (logoNode.style.display = 'none');
+var specialLogoNode = document.getElementById('specialLogo');
+specialLogoNode && (specialLogoNode.style.display = '');
+}
+}
+if(document.readyState === 'complete') {
+specialAction();
+} else {
+window.onload = specialAction;
+}
+</script>            <table cellspacing="0px" id="appqrcode" style="border-spacing: 0; border: 1px solid #e6e6e6; border-radius: 6px; width: 582px; padding: 18px; box-sizing: border-box; margin-top: 50px; overflow: hidden;" class="app_qrcode pannel_info">              <tr>                <td style="font-size: 0; border: none; width: 100px;">                  <img style="width: 100px; height: 100px;" class="app_qrcode_img inlineblock" src="https://rescdn.qqmail.com/qqmail/images/mailappqrcode.416214657d.png" srcset="https://rescdn.qqmail.com/qqmail/images/mailappqrcode.416214657d.png 1x, https://rescdn.qqmail.com/qqmail/images/mailappqrcode@2x.53cd681283.png 2x">                </td>                <td>                  <div style="margin-left: 10px; width: 280px;  font-size: 15px; color: #33312e;">                    <img style="width: 30px; height: 30px; margin-bottom: 10px;" src="https://rescdn.qqmail.com/qqmail/images/QQmaillogo.58c077b623.png" srcset="https://rescdn.qqmail.com/node/webdoc/images/QQmaillogo.58c077b623.png 1x, https://rescdn.qqmail.com/qqmail/images/QQmailogo@2x.4d7043dae1.png 2x">                    <p style="padding: 0; margin: 0;line-height: 21px; margin-bottom: 10px;" class="app_qrcode_desc">扫码下载 QQ邮箱APP                    </p>                    <p style="padding: 0; margin: 0;line-height: 21px; font-size: 13px; color: rgba(51,49,46, 0.6);" class="app_qrcode_desc">邮件收发，随时随地，回复邮件不错过</p>                  </div>                </td>                <td>                  <div style="width: 1px; height: 30px; background: #d6e3f3;" class="app_qrcode_seperator inlineblock"></div>                </td>                <td>                  <img style="margin-left: 30px; width: 115px; height: auto;" class="app_qrcode_iconGroup inlineblock" src="https://rescdn.qqmail.com/qqmail/images/mail_welcome_footer.2c5ce19be2.png"  srcset="https://rescdn.qqmail.com/qqmail/images/mail_welcome_footer.2c5ce19be2.png 1x, https://rescdn.qqmail.com/qqmail/images/mail_welcome_footer@2x.938af1b112.png 2x">                </td>              </tr>            </table>            </div>

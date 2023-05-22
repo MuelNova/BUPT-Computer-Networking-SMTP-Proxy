@@ -56,7 +56,7 @@ class Proxy:
 
     def handle_data(self, client: socket.socket):
         try:
-            data = client.recv(1024)
+            data = client.recv(65536)
         except socket.timeout:
             logger.debug(f'{client} Connection timed out')
             client.close()
