@@ -1,0 +1,18 @@
+
+[project]
+name = "BUPT-Computer-Networking-2021-SMTP-Proxy"
+version = "0.1"
+description = "A SMTP proxy for BUPT Computer Networking Homework 2021"
+authors = [
+    {name = "Nova-Noir", email = "n@ova.moe"},
+    {name = "SilentE", email = "silenteags@gmail.com"},
+    {name = "Hzao", email = "hzao@hzao.me"},
+]
+dependencies = [
+    "pydantic[dotenv]>=1.10.7",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[tool.pdm.scripts]
+start = 'python main.py'
