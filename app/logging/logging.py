@@ -1,10 +1,19 @@
 import logging
 from pathlib import Path
 from datetime import datetime
+from typing import Callable
 
 from ..config import get_config
 
 config = get_config()
+
+SUCCESS = 25
+logging.addLevelName(SUCCESS, "SUCCESS")
+def success_wrap(self) -> Callable:
+    def success(msg, *args, **kwargs):
+        if self.isEnabledFor(SUCCESS):
+            self._log(SUCCESS, msg, args, **kwargs)
+    return success
 
 log_level = config.log_level
 log_save_path = config.log_save_path
@@ -15,6 +24,7 @@ log_format = logging.Formatter("\033[32m%(asctime)s \033[0m[%(levelname)s] \033[
 file_log_format = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s", "%H:%M:%S")
 
 logger = logging.getLogger(__name__)
+logger.success=success_wrap(logger)
 logger.setLevel(log_level)
     
 file_handler = logging.FileHandler(Path(log_save_path) / f'Log-{datetime.now().strftime("%Y%m%d%H%M")}.txt',
@@ -28,10 +38,11 @@ class ColoredFilter(logging.Filter):
     FMTDCIT = {
         'ERROR'   : "\033[31mERROR\033[0m",
         'INFO'    : "\033[37mINFO\033[0m",
-        'DEBUG'   : "\033[1mDEBUG\033[0m",
+        'DEBUG'   : "\033[34mDEBUG\033[0m",
         'WARN'    : "\033[33mWARN\033[0m",
         'WARNING' : "\033[33mWARNING\033[0m",
         'CRITICAL': "\033[35mCRITICAL\033[0m",
+        'SUCCESS' : '\033[32mSUCCESS\033[0m'
     }
     COLOR_DICT = {
         'BLACK'  : "\033[30m",

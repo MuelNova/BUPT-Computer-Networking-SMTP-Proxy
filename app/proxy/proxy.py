@@ -1,4 +1,5 @@
 import socket
+import sys
 import threading
 from typing import Type, Any, Tuple, List
 
@@ -28,8 +29,6 @@ class Proxy:
         self.buf_size = buf_size
         self.timeout = timeout
 
-        self.threads: List[threading.Thread] = []
-        self.clients: List[socket.socket] = []
 
     
     def run(self):
@@ -37,10 +36,8 @@ class Proxy:
             try:
                 client, address = self.socket.accept()
                 client.settimeout(self.timeout)
-                logger.info(f'{self} New connection from {address}')
-                thread = threading.Thread(target=self.handle_data, args=(client, address))
-                self.threads.append(thread)
-                self.clients.append(client)
+                logger.debug(f'{self} New connection from {address}')
+                thread = threading.Thread(target=self.handle_data, args=[client])
                 thread.start()
             except KeyboardInterrupt:
                 self.close()
@@ -60,15 +57,19 @@ class Proxy:
         
 
     def handle_data(self, client: socket.socket):
-        data = client.recv(self.buf_size)
+        try:
+            data = client.recv(self.buf_size)
+        except socket.timeout:
+            logger.debug(f'{self} Connection timed out')
+            return
         self.handler(self.socket, client, data)
         
 
     def close(self):
         logger.info(f'{self} Closing...')
-        for thread in self.threads:
-            thread.join()
-        for client in self.clients:
-            client.close()
+        self.socket.shutdown(socket.SHUT_RDWR)
         self.socket.close()
+        logger.info(f'All proxies closed')
+        sys.exit(0)
+        
 

@@ -11,6 +11,11 @@ class Config(BaseSettings):
     # Log
     log_level: str = 'INFO'
     log_save_path: Union[str, Path] = 'logs'
+
+
+    # QQ SMTP
+    QQ_MAIL_POST_URL: str = '/cgi-bin/compose_send'
+    QQ_MAIL_WEBSERVER: str = 'mail.qq.com'
     
     
     class Config:
