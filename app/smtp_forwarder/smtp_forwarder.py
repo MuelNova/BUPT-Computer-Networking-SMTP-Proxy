@@ -143,13 +143,13 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
                 raise SMTPMailNotExistsError(f"Mail {to.address} is not exist")
             if response.status_code != 250:
                 raise SMTPConnectionError(f"【DATA】[{response.status_code}] {response.message}")
+            logger.success(f"Email \"{self.content.subject}\"[{len(self.content.content)}] from <{self.content.sendmailname}> to {to.name}<{to.address}> send successfully! "
+                       f"From {self.server_socket.getpeername()[0]}:{self.server_socket.getpeername()[1]} to {self.config.smtp_server}:{self.config.smtp_port}")
         
         self.socket.send(f"QUIT\r\n".encode('utf-8'))
         response = self.parser.parse(self.socket.recv(1024))
         if response.status_code != 221:
             raise SMTPConnectionError(f"【QUIT】[{response.status_code}] {response.message}")
-        logger.success(f"Email \"{self.content.subject}\"[{len(self.content.content)}] from <{self.content.sendmailname}> to {to.name}<{to.address}> send successfully! "
-                       f"From {self.server_socket.getpeername()[0]}:{self.server_socket.getpeername()[1]} to {self.config.smtp_server}:{self.config.smtp_port}")
         self.socket.close()
         
         self.server_socket.send(self.format_response({"errcode": "0", "errmsg": "", "sHtml": HTML}))
@@ -162,7 +162,7 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
 class SMTPForwarderFactory:
     def __init__(self):
         self.__queqe: queue.Queue[BaseSMTPForwarder] = queue.Queue()
-        self.__thread = threading.Thread(target=self.__sender_queqe)
+        self.__thread = threading.Thread(target=self.__sender_queue)
         self.__condition = threading.Condition()
         
         self.__thread.start()
@@ -177,7 +177,7 @@ class SMTPForwarderFactory:
         with self.__condition:
             self.__condition.notify()
 
-    def __sender_queqe(self):
+    def __sender_queue(self):
         while True:
             with self.__condition:
                 while self.__queqe.empty():

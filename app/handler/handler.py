@@ -126,9 +126,7 @@ class HTTPHandler(BaseHTTPHandler):
 class SMTPProxyHandler(HTTPHandler):
     def do_POST(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
         if data.path.webserver == config.QQ_MAIL_WEBSERVER and data.path.path == config.QQ_MAIL_POST_URL:
-            # 将 SMTP 交由 SMTPHandler 处理
-            logger.debug("我跑起来啦！")
-            print(data.body.decode('utf-8').split('&'))
+            # 将 SMTP 交由 SMTPForwarder 处理
             param = dict(p.split('=', 1) for p in data.body.decode('utf-8').split('&'))
             try:
                 param = QQMailPostModel(**param, socket=client)
