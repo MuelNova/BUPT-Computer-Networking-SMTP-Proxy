@@ -1,79 +1,50 @@
 # BUPT-Computer-Networking-SMTP-Proxy
 
-## Before you start
+一个应付 21-BUPT-Computer-Networking 的实验。
+使用 socket 编程实现一个 SMTP 代理
 
+## Feature
+- 基本的透明代理
+- 特定站点的 SMTP 代理
 
-We will use [PDM](https://pdm.fming.dev/latest/) for package management.
-So there's little differences when running project or adding packages, check [Version Controlling](#version-control) for adding packages and [Run-the-project](#run-the-project) for running the project.
+## How it works
+![](docs/flow_chart.png)
+![](docs/call_stack.png)
+
+## How to run
 
 ```sh
-git clone git@github.com:Nova-Noir/BUPT-Computer-Networking-SMTP-Proxy.git
-git checkout -b <YOUR_BRANCH_NAME> dev
-
+git clone https://github.com/Nova-Noir/BUPT-Computer-Networking-SMTP-Proxy.git
 cd BUPT-Computer-Networking-SMTP-Proxy
+pip install pdm
+python -m pdm install
 
-# Use pdm 
-curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python -
-pdm install
+# edit your config
+
+python -m pdm run start
 ```
 
-
-
-## Workflow
-
+## Configs
 ```sh
-# Make sure you're working under your own branch
-smtp_proxy\Scripts\activate.bat  # Windows
-source  smtp_proxy/bin/activate  # Linux / macOS
-
-... After some development
-git add .
-git commit -m 'Your commit message'  # if possible, follow https://gitmoji.dev/ for a prettier commit message.
-
-# Update main branch
-git checkout dev
-git pull origin dev
-
-# Rebase and fix conflicts
-git checkout <YOUR_BRANCH_NAME>
-git rebase dev
-... Fix conflicts
-# ( Optional ) Make your commit history prettier ( squash commits )
-git rebase -i HEAD~3
-# Ignore next line if there's no conflict
-git rebase --continue
-
-# Push
-git push <YOUR_BRANCH_NAME>
+cp .env.example .env
+vim .env # or nano, or code, whatever you want.
 ```
 
-! DO NOT MODIFY `main` or `dev` BRANCH DIRECTLY !
+config
+```yaml
+HOST = '0.0.0.0'  
+PORT = 11567
 
 
-## Run the project
-When using PDM, we're actually adding packages to the virtual env, thus, it is required to specify the interpreter.
+# Log
+LOG_LEVEL = 'INFO'
+LOG_SAVE_PATH = 'logs'
 
-```sh
-pdm run start
-# or
-pdm run python main.py
-# or
-eval $(pdm venv activate in-project)
-python main.py
-```
 
-## Version Control
+# QQ SMTP
+QQ_MAIL_POST_URL = '/cgi-bin/compose_send'
+QQ_MAIL_WEBSERVER = 'mail.qq.com'
 
-If you add any package, make sure to export it using
-
-```sh
-pdm add <PACKAGE_NAME>
-```
-
-If updated, make sure to sync packages using 
-
-```sh
-pdm sync
-# or
-pdm install
+ACCOUNTS = 'qq;10001@qq.com;114514;smtp.qq.com;25'
+# type;username;password;smtp;smtp_port type;username;password;smtp;smtp_port
 ```
