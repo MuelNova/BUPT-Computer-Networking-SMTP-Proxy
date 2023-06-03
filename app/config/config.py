@@ -14,6 +14,7 @@ class AccountConfig(BaseModel):
 
 
 class Config(BaseSettings):
+    # 配置监听端口等
     host: str = '0.0.0.0'
     port: int = 11567
     
