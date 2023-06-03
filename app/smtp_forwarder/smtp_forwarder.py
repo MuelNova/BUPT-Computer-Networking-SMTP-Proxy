@@ -177,7 +177,7 @@ class SMTPForwarderFactory:
             raise ValueError(f"Invalid MailPostModel {type(data)}")
         with self.__condition:
             self.__condition.notify()
-    
+
     # 邮件发送线程的执行函数
     def __sender_queue(self):
         while True:
