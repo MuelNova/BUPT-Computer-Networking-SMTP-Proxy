@@ -11,7 +11,7 @@ from app.logging import logger
 
 config = get_config()
 
-
+# 基类，定义HTTP的基本操作
 class BaseHTTPHandler(ABC):
     def __init__(self, parser: Type[HTTPParser]):
         if not issubclass(parser, HTTPParser):
@@ -53,7 +53,7 @@ class BaseHTTPHandler(ABC):
     def do_DELETE(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
         raise NotImplementedError
 
-
+# 子类，实现HTTP的基本操作
 class HTTPHandler(BaseHTTPHandler):
     def do_CONNECT(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
         cc = self.make_session(client, data.path)
@@ -77,7 +77,7 @@ class HTTPHandler(BaseHTTPHandler):
                     break
                 client.send(reply)
             except:
-                pass  # We don't handle exceptions here because the lack of time
+                pass  # 其他 exception 由于时间原因就暂不处理了
         try:
             cc.close()
         except OSError:
@@ -122,7 +122,7 @@ class HTTPHandler(BaseHTTPHandler):
     
     do_POST = do_DELETE = do_PUT = do_PATCH = do_OPTION = do_GET
     
-
+# 子类，继承自HTTPHandler，用于处理SMTP代理，根据目标URL判断是否交由SMTPForwarder来处理。
 class SMTPProxyHandler(HTTPHandler):
     def do_POST(self, server: socket.socket, client: socket.socket, data: HTTPParseModel) -> Any:
         if data.path.webserver == config.QQ_MAIL_WEBSERVER and data.path.path == config.QQ_MAIL_POST_URL:

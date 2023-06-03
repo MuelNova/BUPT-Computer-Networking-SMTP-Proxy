@@ -3,6 +3,7 @@ import re
 from typing import Dict, Any, Optional, List
 from pydantic import BaseModel, Field, validator, ValidationError
 
+# 路径模型
 class PathModel(BaseModel):
     raw_path: str
     protocol: Optional[str] = None
@@ -11,7 +12,7 @@ class PathModel(BaseModel):
     query: str = ''
     port: int
 
-
+# HTTP请求的模型
 class HTTPParseModel(BaseModel):
     raw: bytes
     method: str
@@ -20,13 +21,14 @@ class HTTPParseModel(BaseModel):
     headers: Dict[str, Any]
     body: Optional[bytes] = None
 
-
+# 用于 SMTP 响应解析的模型
 class SMTPParseModel(BaseModel):
     raw: bytes
     status_code: int
     message: bytes
 
 
+# 收件人模型
 class ToModel(BaseModel):
     address: str
     name: str
@@ -40,7 +42,7 @@ class ToModel(BaseModel):
             return values['address'].split('@')[0]
         return value
 
-
+# 电子邮件模型
 class MailPostModel(BaseModel):
     to: List[ToModel]
     sendmailname: str
@@ -51,7 +53,7 @@ class MailPostModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
 
-
+# QQ邮箱特定格式的模型
 class QQMailPostModel(MailPostModel):
     @validator('to', pre=True, always=True)
     def to_validator(cls, value: str | List[ToModel]) -> List[ToModel]:
