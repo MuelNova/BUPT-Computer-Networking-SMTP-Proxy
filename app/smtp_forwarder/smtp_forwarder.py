@@ -14,9 +14,10 @@ from app.parser import SMTPParser
 from app.logging import logger
 from app.config import get_config, AccountConfig
 
-
+# 读取成功发送邮件的HTML模板
 HTML = open(Path(__file__).parent / 'success.html', 'r', encoding='UTF-8').read()
 
+# 定义基本的邮件转发类
 class BaseSMTPForwarder(ABC):
     def __init__(self,
                  data: MailPostModel,
@@ -30,7 +31,7 @@ class BaseSMTPForwarder(ABC):
         self.server_socket = data.socket
         self.content = data
         self.parser = parser
-
+    # 格式化HTTP响应
     @staticmethod
     def format_response(response: str | dict[str, int | bytes]) -> bytes:
         response = response if isinstance(response, bytes) else json.dumps(response).encode('utf-8')
@@ -41,16 +42,16 @@ class BaseSMTPForwarder(ABC):
         SUCCESS_RESPONSE += "\r\n"
         return SUCCESS_RESPONSE.format(length=len(response)).encode('utf-8') + response
     
-
+    # 抽象方法，子类需实现邮件发送功能
     @abstractmethod
     def send(self):
         raise NotImplementedError
 
-
+# 定义用于QQ邮箱的邮件转发类
 class QQMailSMTPForwarder(BaseSMTPForwarder):
     def __init__(self, data: QQMailPostModel, *, parser: Type[SMTPParser] = SMTPParser):
         super().__init__(data, "qq", parser=parser)
-
+    # 用 Socket 根据 SMTP 协议发送邮件
     def send(self):
         """
         实现的异常处理：
@@ -112,7 +113,7 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
         for to in self.content.to:
             logger.info(f"Sending email to {to.name}<{to.address}>...")
             self.socket.send(f"MAIL FROM: <{self.content.sendmailname}>\r\n".encode('utf-8'))
-            # This comes from qq mail itself, so it is definately a valid mail address.
+            # 来自QQ邮箱的前端，肯定合法.
             sending = self.parser.parse(self.socket.recv(1024))
             if sending.status_code == 501:
                 raise SMTPInvalidMailError(f"Mail is not the same as the login account")
@@ -122,7 +123,7 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
             self.socket.send(f"RCPT TO: <{to.address}>\r\n".encode('utf-8'))
             sending = self.parser.parse(self.socket.recv(1024))
             if sending.status_code == 502:
-                raise SMTPInvalidMailError(f"Mail {to.address} is not valid")  # though we have already verified it, just in case
+                raise SMTPInvalidMailError(f"Mail {to.address} is not valid")
             if sending.status_code != 250:
                 raise SMTPConnectionError(f"【RCPT TO】[{sending.status_code}] {sending.message}")
             
@@ -158,7 +159,7 @@ class QQMailSMTPForwarder(BaseSMTPForwarder):
 
 
 
-
+# 邮件转发处理的“工厂”，其实是SMTP发送的控制器，控制发送队列等等
 class SMTPForwarderFactory:
     def __init__(self):
         self.__queqe: queue.Queue[BaseSMTPForwarder] = queue.Queue()
@@ -167,9 +168,9 @@ class SMTPForwarderFactory:
         
         self.__thread.start()
         
-
+    # 添加新的邮件转发任务
     def add_forwarder(self, data: MailPostModel, *, parser: Type[SMTPParser] = SMTPParser):
-        # Email address validation
+        # Email 地址验证
         if isinstance(data, QQMailPostModel):
             self.__queqe.put(QQMailSMTPForwarder(data, parser=parser))
         else:
@@ -177,6 +178,7 @@ class SMTPForwarderFactory:
         with self.__condition:
             self.__condition.notify()
 
+    # 邮件发送线程的执行函数
     def __sender_queue(self):
         while True:
             with self.__condition:
@@ -206,7 +208,7 @@ class SMTPForwarderFactory:
     
 
 smtp_forwarder_factory: SMTPForwarderFactory = None
-
+# Factory 的实例
 def get_smtp_forwarder() -> SMTPForwarderFactory:
     global smtp_forwarder_factory
     if smtp_forwarder_factory is None:

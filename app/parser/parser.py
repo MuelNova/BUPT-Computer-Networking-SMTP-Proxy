@@ -4,14 +4,14 @@ from typing import Any, Tuple, Dict, List
 from app.models import HTTPParseModel, PathModel, SMTPParseModel
 from app.logging import logger
 
-
+# 定义一个基类，包含抽象方法parse
 class BaseParser(ABC):
     @classmethod
     @abstractmethod
     def parse(data: bytes) -> Any:
         raise NotImplementedError
 
-
+# 定义一个HTTPParser类继承自BaseParser
 class HTTPParser(BaseParser):
     @classmethod
     def parse(cls, data: bytes) -> HTTPParseModel:
@@ -24,7 +24,8 @@ class HTTPParser(BaseParser):
         path = cls.parse_path(path)
         headers = dict([header.decode('utf-8').split(': ') for header in headers[:-1]])
         return HTTPParseModel(raw=data, method=method, path=path, version=version, headers=headers, body=body)
-    
+    # 定义一个解析请求路径的类方法
+
     @classmethod
     def parse_path(cls, raw_path: str) -> PathModel:
         if len(splitted_path := raw_path.split('://')) == 1:
@@ -46,6 +47,7 @@ class HTTPParser(BaseParser):
         return PathModel(raw_path=raw_path, protocol=protocol, webserver=webserver, path=path, query=query, port=port)
         
 
+# SMTP解析类
 class SMTPParser(BaseParser):
     @classmethod
     def parse(cls, data: bytes) -> SMTPParseModel:
@@ -54,6 +56,7 @@ class SMTPParser(BaseParser):
         status_code = int(status_code)
         return SMTPParseModel(raw=data, status_code=status_code, message=message)
     
+    # 定义一个解析SMTP消息的类方法
     @classmethod
     def parse_multi(cls, data: bytes) -> List[SMTPParseModel]:
         return [cls.parse(d) for d in data.split(b'\r\n') if d != b'']
